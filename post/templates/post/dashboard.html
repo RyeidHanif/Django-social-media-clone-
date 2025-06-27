@@ -1,0 +1,22 @@
+{% extends "post/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<div class="container d-flex flex-column justify-content-top align-items-center vh-100">
+
+  <h1 class="mb-4 " style="padding-bottom: 50px;"><bold>Welcome to your dashboard, {{ user }}</bold></h1>
+  <h1 class= "mb-4" style="padding-bottom: 50px;"> What would you like to do today </h1>
+
+  <form class="form-group d-flex flex-wrap justify-content-center gap-2" method="post" action="#">
+    {% csrf_token %}
+
+    <button class="btn btn-success bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="addbutton" value="addbutton">Post Something</button>
+    <button class="btn btn-primary bg-opacity-80"  style="padding: 10px 10px 10px 10px ;"type="submit" name="showmyposts" value="showmyposts">Show my posts</button>
+    <button class="btn btn-secondary bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="showmyfeed" value="showmyfeed">Show my feed</button>
+    <button class="btn btn-warning bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="settings" value="settings">Settings</button>
+    <button class="btn btn-dark bg-opacity-80"  style="padding: 10px 10px 10px 10px ;" type="submit" name="messages" value="messages">Messages</button>
+  </form>
+
+</div>
+{% endblock %}

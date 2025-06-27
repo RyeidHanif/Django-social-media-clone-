@@ -1,0 +1,21 @@
+{% extends 'post/base.html'%}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+ <h1> Welcome to the Home page of my remake of myspace or whatever </h1>
+<br>
+<h3> Before you can browse around , please sign up <u> <a href= "{% url 'signup' %}">here</a></u> </h2>
+<h3> Already have an account ? </h3>
+<h3> Login in <u><a href="{% url 'login' %}">here</a></u></h3>
+
+<br>
+
+<h1> Have fun </h1>
+
+
+
+
+
+{% endblock %}

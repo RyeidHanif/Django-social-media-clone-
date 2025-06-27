@@ -1,0 +1,13 @@
+{% extends 'post/base.html' %}
+
+{% block title %} Modify Post {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="POST" class="form-group"  enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form|crispy }}
+	<button type="submit" class="btn btn-success">Modify </button>
+    </form>
+{% endblock %}
