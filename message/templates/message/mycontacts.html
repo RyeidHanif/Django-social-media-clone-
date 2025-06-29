@@ -1,0 +1,22 @@
+{% extends 'post/base.html' %}
+
+{% block title %} My Contacts {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3>All Users</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {% for contact in contacts %}
+      {% if contact != request.user %}
+        <div class="mb-3 d-flex justify-content-between align-items-center border p-2">
+          <span>{{ contact.username }}</span>
+          <button class="btn btn-primary" type="submit" name="message" value="{{ contact.id }}">
+            Message
+          </button>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </form>
+</div>
+{% endblock %}

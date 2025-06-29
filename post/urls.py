@@ -8,10 +8,11 @@ urlpatterns=  [
     path("addpost/", views.addpost , name = "addpost"),
     path("myposts/" , views.showmyposts , name = "showmyposts"),
     path("myfeed/" , views.showmyfeed , name = "showmyfeed"),
-    path("mysettings/", views.mysettings , name = "mysettings"),
+    path("settings/", views.settings , name = "settings"),
     path("modifypost/<int:postID>/", views.modifypost, name="modifypost"),
-    path("showpostcomments/<int:postID>/", views.showcomments, name="showcomments"),
-    path('dashboard/', views.dashboard , name = "dashboard")
+    path("showcomments/<int:postID>/", views.showcomments, name="showcomments"),
+    path('dashboard/', views.dashboard , name = "dashboard"),
+    path('aboutuser/<int:user_id>', views.aboutuser, name="aboutuser"),
 
 
 ]

@@ -10,13 +10,21 @@ class Post(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True) # user does not have to add the date, auto adds the current date
     owner = models.ForeignKey(User , related_name = "posts_set" ,on_delete = models.CASCADE) # foreign key to the User class 
 
-class comment(models.Model):
+class Comment(models.Model):
     content = models.TextField(max_length =100)
     post = models.ForeignKey(Post , related_name = "comments_set", on_delete = models.CASCADE)
     date_added =models.DateTimeField(auto_now_add=True)
 
 
 
+class ProfilePhoto(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(
+        upload_to='profile_photos/',
+        null=True,
+        blank=True
+
+    )
 
 
 

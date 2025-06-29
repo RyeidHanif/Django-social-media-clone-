@@ -1,0 +1,43 @@
+{% extends "post/base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="container d-flex flex-column align-items-center">
+    <h1 class="my-4">ABOUT</h1>
+
+    <div class="d-flex align-items-center mb-4 gap-4">
+        {% if profilephoto and profilephoto.photo %}
+    <img src="{{ profilephoto.photo.url }}"
+         alt="Profile Photo"
+         class="rounded-circle"
+         style="width: 100px; height: 100px; object-fit: cover;">
+{% else %}
+    <img src="{% static 'default_profile_photo.jpg' %}"
+         alt="Default Profile Photo"
+         class="rounded-circle"
+         style="width: 100px; height: 100px; object-fit: cover;">
+{% endif %}
+
+        <h3 class="mb-0">{{ target_user.username }}</h3>
+    </div>
+
+    {% for post in posts %}
+      <div class="card shadow-sm p-4 mb-4 w-75 text-center">
+        <h4>{{ post.postname }}</h4>
+        <p>{{ post.date_posted }}</p>
+        <p>{{ post.content }}</p>
+
+        {% if post.banner %}
+          <img src="{{ post.banner.url }}" 
+               class="img-thumbnail mx-auto d-block mb-3"
+               alt="Post Banner"
+               style="max-height: 300px; width: auto; object-fit: contain;">
+        {% endif %}
+
+        <h5>Likes: {{ post.likes }}</h5>
+      </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Post
+from .models import Post,Comment
 
 class AddPostForm(forms.ModelForm):
     class Meta:
@@ -16,5 +16,12 @@ class ModifyPostForm(forms.Form):
 class CommentForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea())
 
+class ChangeProfilePhotoForm(forms.Form):
+    new_photo = forms.ImageField(required=False, label="newpfp")
+
+class CommentFormModel(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
 
     

@@ -1,28 +1,47 @@
 {% extends 'post/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Chat with {{ other_user.username }}{% endblock %}
+
 {% block content %}
-<div class="container my-4" style="max-width: 600px; height: 80vh; overflow-y: auto; background: #fafafa; border-radius: 0.5rem; padding: 1rem; border: 1px solid #ddd;">
-  {% for msg in messages %}
-    {% if msg.sender == request.user %}
-      <!-- Sent message (right) -->
-      <div class="d-flex justify-content-end mb-3">
-        <div class="bg-success bg-opacity-25 rounded-3 p-3" style="max-width: 70%;">
-          <div>{{ msg.content }}</div>
-          <small class="d-block text-end text-success fst-italic">
-            {{ msg.sender.username }} (You) • {{ msg.timesent|date:"H:i, d M" }}
-          </small>
+<div class="container my-4" style="max-width: 600px; height: 80vh; display: flex; flex-direction: column; border: 1px solid #ccc; border-radius: 8px; padding: 1rem; background: #fafafa;">
+
+  <!-- Top Bar with Receiver Name -->
+  <div class="text-center mb-3">
+    <h4 class="fw-bold">Chatting with {{ other_user.username }}</h4>
+  </div>
+
+  <!-- messages_set SCROLLABLE AREA -->
+  <div style="flex: 1; overflow-y: auto; margin-bottom: 1rem;">
+    {% for msg in messages_set %}
+      {% if msg.sender == request.user %}
+        <!-- Sent message -->
+        <div class="d-flex justify-content-end mb-2">
+          <div class="bg-success bg-opacity-25 p-2 rounded-3" style="max-width: 70%;">
+            {{ msg.content }}
+            <div class="text-end small text-muted">{{ msg.sender.username }} • {{ msg.timesent|date:"H:i, d M" }}</div>
+          </div>
         </div>
-      </div>
-    {% else %}
-      <!-- Received message (left) -->
-      <div class="d-flex justify-content-start mb-3">
-        <div class="bg-light border rounded-3 p-3" style="max-width: 70%;">
-          <div>{{ msg.content }}</div>
-          <small class="d-block text-start text-muted fst-italic">
-            {{ msg.sender.username }} • {{ msg.timesent|date:"H:i, d M" }}
-          </small>
+      {% else %}
+        <!-- Received message -->
+        <div class="d-flex justify-content-start mb-2">
+          <div class="bg-light border p-2 rounded-3" style="max-width: 70%;">
+            {{ msg.content }}
+            <div class="text-start small text-muted">{{ msg.sender.username }} • {{ msg.timesent|date:"H:i, d M" }}</div>
+          </div>
         </div>
-      </div>
-    {% endif %}
-  {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- INPUT BOX AT BOTTOM -->
+  <form method="POST" enctype="multipart/form-data" class="d-flex gap-2 align-items-end">
+    {% csrf_token %}
+    <div class="flex-grow-1">
+      {{ form|crispy }}
+    </div>
+    <button type="submit" class="btn btn-success">Send</button>
+  </form>
+
 </div>
 {% endblock %}

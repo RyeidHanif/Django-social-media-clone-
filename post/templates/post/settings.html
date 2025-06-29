@@ -1,0 +1,31 @@
+{% extends 'post/base.html' %}
+
+{% block title %} Settings  {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% load static %}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div class="text-center">
+    <h1>Profile of: {{ user }}</h1>
+
+    {% if originalphoto %}
+      <p>Current Profile Photo:</p>
+      <img src="{{ originalphoto }}" alt="Current Profile Photo" style="width:100px; height:100px; object-fit:cover;">
+    {% else %}
+      <p>Current Profile Photo:</p>
+      <img src="{% static 'default_profile_photo.jpg' %}" alt="Default Profile Photo" style="width:100px; height:100px; object-fit:cover;">
+    {% endif %}
+
+    <form method="POST" class="form-group mt-3" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-success">Change</button>
+      <button type="submit" class="btn btn-danger" name="delete" value="delete">Delete Photo</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

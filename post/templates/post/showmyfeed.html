@@ -10,7 +10,7 @@
     <div class="card shadow-sm p-4 mb-4 w-75 text-center">
       <h4>{{ post.postname }}</h4>
       <p>{{ post.date_posted }}</p>
-      <p>By : {{post.owner.username}}</p>
+      <p>By : <a href="{% url 'aboutuser' post.owner.id %}">{{post.owner.username}}</a></p>
       <p>{{ post.content }}</p>
 
       
@@ -23,9 +23,9 @@
       
       <h5>Likes: {{ post.likes }}</h5>
 
-      <form class="form-group d-flex justify-content-center gap-2" method="post" action="#">
+      <form class="form-group d-flex justify-content-center gap-2" method="post" action="">
         {% csrf_token %}
-        <button class="btn btn-secondary" type="submit" name="comment" value="{{ post.id }}"> Comments </button>
+        <button class="btn btn-primary" type="submit" name="comment" value="{{ post.id }}"> Comments </button>
         <button class="btn btn-success" type="submit" name="like" value="{{ post.id }}"> Like </button>
         
       </form>
