@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-4">
 
-  <!-- Post info using 'post' -->
+
   <div class="card shadow-sm mb-4" style="max-height: 300px; overflow: hidden;">
     <div class="card-body">
       <h4 class="card-title">{{ post.postname }}</h4>
@@ -13,35 +13,34 @@
       <p>{{ post.content }}</p>
 
       {% if post.banner %}
-        <img src="{{ post.banner.url }}" class="img-thumbnail" style="max-height: 200px; object-fit: contain;">
+      <img src="{{ post.banner.url }}" class="img-thumbnail" style="max-height: 200px; object-fit: contain;">
       {% endif %}
     </div>
   </div>
 
-  <!-- Comments section -->
+
   <div class="mb-4">
     <h5>Comments</h5>
     {% if comments %}
-      {% for comment in comments %}
-        <div class="card mb-2">
-          <div class="card-body">
-            <p class="mb-1">{{ comment.content }}</p>
-            <small class="text-muted">Posted on {{ comment.date_added }}</small>
-          </div>
-        </div>
-      {% endfor %}
+    {% for comment in comments %}
+    <div class="card mb-2">
+      <div class="card-body">
+        <p class="mb-1">{{ comment.content }}</p>
+        <small class="text-muted">Posted on {{ comment.date_added }}</small>
+      </div>
+    </div>
+    {% endfor %}
     {% else %}
-      <p class="text-muted">No comments yet. Be the first!</p>
+    <p class="text-muted">No comments yet. Be the first!</p>
     {% endif %}
   </div>
 
-  <!-- Comment Form -->
   <div class="card p-3 shadow-sm">
     <h5>Leave a Comment</h5>
     <form method="post" class="form-group" action="{% url 'showcomments' post.id %}">
-	    {% csrf_token %}
-	    {{ form|crispy }}
-	  <button type="submit" class="btn btn-primary" name = "submitcomment" value = "submitcomment">submit comment </button>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary" name="submitcomment" value="submitcomment">submit comment </button>
     </form>
   </div>
 

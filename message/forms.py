@@ -1,8 +1,8 @@
-from django import forms 
+from django import forms
 from .models import Messages
 
 
 class MessageForm(forms.ModelForm):
-    class Meta : 
+    class Meta:
         model = Messages
         fields = ["content"]
