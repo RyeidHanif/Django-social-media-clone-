@@ -82,7 +82,13 @@ def showmyfeed(request):
             return redirect("showcomments", postID=request.POST.get("comment"))
         elif request.POST.get("like"):
             post = Post.objects.get(id=request.POST.get("like"))
-            post.likes += 1
+
+            if request.user in post.likes.all():
+                post.likes.remove(request.user)  # Unlike
+            else:
+                post.likes.add(request.user)
+
+
             post.save()
 
     return render(request, "post/showmyfeed.html", {"posts": all_posts})

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     postname = models.CharField(max_length=50, unique=True)
     content = models.TextField(max_length=500)
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
     banner = models.ImageField(
         upload_to="media/", blank=True, null=True
     )  # image not compulsory , blanke = true so form can be mepty and null so db can add emtpy
