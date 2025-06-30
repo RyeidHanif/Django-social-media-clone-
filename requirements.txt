@@ -1,0 +1,6 @@
+django
+pillow
+requests
+django-crispy-forms
+crispy-bootstrap5
+
