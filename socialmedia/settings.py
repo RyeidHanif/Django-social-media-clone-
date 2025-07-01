@@ -148,3 +148,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 2000 # 20 minutes (seconds)
 
 
+TIME_ZONE = 'Asia/Karachi'  # or your actual timezone
+USE_TZ = True  # keep this True to handle timezone-aware datetimes properly
