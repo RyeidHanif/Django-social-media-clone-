@@ -4,6 +4,15 @@
 
 {% block content %}
 <style>
+  .homepage-wrapper {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
   .fade-in {
     animation: fadeInUp 1.2s ease forwards;
     opacity: 0;
@@ -18,15 +27,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  body {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .content-container {
@@ -49,15 +49,17 @@
   }
 </style>
 
-<div class="content-container fade-in">
-  <h1 class="display-2 fw-bold mb-3">BaatCheet</h1>
-  <p class="lead mb-4">Connect. Share. Discover. <br> Your new favorite social space.</p>
+<div class="homepage-wrapper">
+  <div class="content-container fade-in">
+    <h1 class="display-2 fw-bold mb-3">BaatCheet</h1>
+    <p class="lead mb-4">Connect. Share. Discover. <br> Your new favorite social space.</p>
 
-  <div class="d-flex justify-content-center gap-4 mb-3">
-    <a href="{% url 'signup' %}" class="btn btn-success btn-lg shadow-sm">Sign Up</a>
-    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg shadow-sm">Login</a>
+    <div class="d-flex justify-content-center gap-4 mb-3">
+      <a href="{% url 'signup' %}" class="btn btn-success btn-lg shadow-sm">Sign Up</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg shadow-sm">Login</a>
+    </div>
+
+    <small class="text-light-50">Already have an account? Just log in and start chatting away!</small>
   </div>
-
-  <small class="text-light-50">Already have an account? Just log in and start chatting away!</small>
 </div>
 {% endblock %}
