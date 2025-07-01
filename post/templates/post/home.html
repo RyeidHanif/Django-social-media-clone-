@@ -1,21 +1,63 @@
-{% extends 'post/base.html'%}
+{% extends 'post/base.html' %}
 
-{% block title %} Home {% endblock %}
+{% block title %}Welcome to BaatCheet{% endblock %}
 
 {% block content %}
+<style>
+  .fade-in {
+    animation: fadeInUp 1.2s ease forwards;
+    opacity: 0;
+  }
 
- <h1> Welcome to the Home page of my remake of myspace or whatever </h1>
-<br>
-<h3> Before you can browse around , please sign up <u> <a href= "{% url 'signup' %}">here</a></u> </h2>
-<h3> Already have an account ? </h3>
-<h3> Login in <u><a href="{% url 'login' %}">here</a></u></h3>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-<br>
+  body {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-<h1> Have fun </h1>
+  .content-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 60px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    max-width: 600px;
+    text-align: center;
+  }
 
+  a.btn {
+    min-width: 140px;
+    font-weight: 600;
+  }
 
+  a.btn:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease;
+  }
+</style>
 
+<div class="content-container fade-in">
+  <h1 class="display-2 fw-bold mb-3">BaatCheet</h1>
+  <p class="lead mb-4">Connect. Share. Discover. <br> Your new favorite social space.</p>
 
+  <div class="d-flex justify-content-center gap-4 mb-3">
+    <a href="{% url 'signup' %}" class="btn btn-success btn-lg shadow-sm">Sign Up</a>
+    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg shadow-sm">Login</a>
+  </div>
 
+  <small class="text-light-50">Already have an account? Just log in and start chatting away!</small>
+</div>
 {% endblock %}
