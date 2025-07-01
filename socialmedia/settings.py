@@ -145,7 +145,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 2000 # 20 minutes (seconds)
 
 
 TIME_ZONE = 'Asia/Karachi'  # or your actual timezone
