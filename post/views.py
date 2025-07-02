@@ -258,13 +258,6 @@ def viewrecom(request):
             messages.success(request, "Sent successfully")
             return redirect("viewrecom")
 
-        elif request.POST.get("cancel"):
-            FriendRequest.objects.filter(
-                from_user=user, to_user=request.POST.get("cancel")
-            ).first().delete()
-            messages.success(request, "Cancelled Successfully")
-            return redirect("viewrecom")
-
     return render(request, "post/myrecom.html", {"contacts": display})
 
 
