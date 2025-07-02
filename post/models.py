@@ -30,4 +30,15 @@ class ProfilePhoto(models.Model):
     photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
 
 
+class FriendRequest(models.Model):
+    from_user = models.ForeignKey(User, related_name="sent_requests", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name="received_requests", on_delete=models.CASCADE)
+    status = models.CharField(choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')], default='pending', max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+# extend default user class to allow for friends, otherwise very complicated
+User.add_to_class('friends', models.ManyToManyField('self', symmetrical=True, blank=True))
+
+
+
 # Create your models here.

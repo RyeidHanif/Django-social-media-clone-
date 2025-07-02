@@ -1,0 +1,27 @@
+{% extends 'post/base.html' %}
+
+{% block title %} My Contacts {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-3 text-center text-info fw-semibold">People You May Know</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {% for contact in contacts %}
+      {% if contact != request.user %}
+        <div class="d-flex justify-content-between align-items-center p-3 mb-3 border rounded shadow-sm bg-white">
+          <div class="fw-bold">{{ contact.username }}</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary btn-sm" type="submit" name="sendfriendreq" value="{{ contact.id }}">
+              Send Request
+            </button>
+            <button class="btn btn-outline-danger btn-sm" type="submit" name="cancel" value="{{ contact.id }}">
+              Cancel
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </form>
+</div>
+{% endblock %}

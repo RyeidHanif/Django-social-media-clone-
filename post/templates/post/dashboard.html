@@ -3,20 +3,80 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block content %}
-<div class="container d-flex flex-column justify-content-top align-items-center vh-100">
+<div class="container d-flex flex-column justify-content-center align-items-center vh-100">
 
-  <h1 class="mb-4 " style="padding-bottom: 50px;"><bold>Welcome to your dashboard, {{ user }}</bold></h1>
-  <h1 class= "mb-4" style="padding-bottom: 50px;"> What would you like to do today </h1>
+  <h1 class="mb-5 text-center fw-bold">Welcome, {{ user }}!</h1>
+  <h4 class="mb-4 text-center text-secondary">What would you like to do today?</h4>
 
-  <form class="form-group d-flex flex-wrap justify-content-center gap-2" method="post" action="#">
+  <form method="post" class="d-grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); width: 100%; max-width: 600px;">
     {% csrf_token %}
 
-    <button class="btn btn-success bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="addbutton" value="addbutton">Post Something</button>
-    <button class="btn btn-primary bg-opacity-80"  style="padding: 10px 10px 10px 10px ;"type="submit" name="showmyposts" value="showmyposts">Show my posts</button>
-    <button class="btn btn-secondary bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="showmyfeed" value="showmyfeed">Show my feed</button>
-    <button class="btn btn-warning bg-opacity-80" style="padding: 10px 10px 10px 10px ;" type="submit" name="settings" value="settings">Settings</button>
-    <button class="btn btn-dark bg-opacity-80"  style="padding: 10px 10px 10px 10px ;" type="submit" name="messages" value="messages">Messages</button>
-  </form>
+    <button class="btn btn-outline-success d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="addbutton" value="addbutton">
+      <i class="bi bi-plus-circle-fill fs-1 mb-2"></i>
+      Post Something
+    </button>
 
+    <button class="btn btn-outline-primary d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="showmyposts" value="showmyposts">
+      <i class="bi bi-file-earmark-post-fill fs-1 mb-2"></i>
+      Show My Posts
+    </button>
+
+    <button class="btn btn-outline-secondary d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="showmyfeed" value="showmyfeed">
+      <i class="bi bi-rss-fill fs-1 mb-2"></i>
+      Show My Feed
+    </button>
+
+    <button class="btn btn-outline-warning d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="settings" value="settings">
+      <i class="bi bi-gear-fill fs-1 mb-2"></i>
+      Settings
+    </button>
+
+    <button class="btn btn-outline-dark d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="friends" value="friends">
+      <i class="bi bi-people-fill fs-1 mb-2"></i>
+      Friends
+    </button>
+
+    <button class="btn btn-outline-info d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="viewrecom" value="viewrecom">
+      <i class="bi bi-person-lines-fill fs-1 mb-2"></i>
+      View Recommended People
+    </button>
+
+    <button class="btn btn-outline-danger d-flex flex-column align-items-center p-3 rounded shadow-sm" type="submit" name="viewpending" value="viewpending">
+      <i class="bi bi-envelope-fill fs-1 mb-2"></i>
+      View Pending Requests
+    </button>
+
+  </form>
 </div>
+
+<style>
+  button.btn-outline-success:hover {
+    background-color: #d4edda;
+    border-color: #28a745;
+  }
+  button.btn-outline-primary:hover {
+    background-color: #cce5ff;
+    border-color: #007bff;
+  }
+  button.btn-outline-secondary:hover {
+    background-color: #e2e3e5;
+    border-color: #6c757d;
+  }
+  button.btn-outline-warning:hover {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+  }
+  button.btn-outline-dark:hover {
+    background-color: #d6d8d9;
+    border-color: #343a40;
+  }
+  button.btn-outline-info:hover {
+    background-color: #bee5eb;
+    border-color: #17a2b8;
+  }
+  button.btn-outline-danger:hover {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+  }
+</style>
 {% endblock %}

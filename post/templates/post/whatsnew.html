@@ -1,0 +1,28 @@
+{% extends 'post/base.html' %}
+
+{% block title %} What’s New in Version 1.0.3x {% endblock %}
+
+{% block content %} 
+
+<div class="container my-5">
+  <h1 class="text-center mb-4">What’s New in Version 1.0.3x</h1>
+  
+  <section class="mb-4">
+    <h2>Bug Fixes & Improvements</h2>
+    <ul>
+      <li>Resolved signup and logout button overlap issue on mobile devices for smoother navigation.</li>
+      <li>Revamped the dashboard design — cleaner, more intuitive, and user-friendly.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>New Features</h2>
+    <ul>
+      <li>Introduced a fully functional Friends system — send, receive, cancel, accept, and reject friend requests seamlessly.</li>
+      <li>Privacy improved: now you can only view the About page of users who are your friends.</li>
+      <li>Messaging restricted to friends only, enhancing user security and meaningful interactions.</li>
+    </ul>
+  </section>
+</div>
+
+{% endblock %}

@@ -32,11 +32,3 @@ def chat_with(request, reciever_id):
         {"messages_set": messages, "form": messageform, "other_user": other_user},
     )
 
-
-def viewcontacts(request):
-    contacts = User.objects.all()
-    if request.method == "POST":
-        if request.POST.get("message"):
-            return redirect("chat_with", reciever_id=request.POST.get("message"))
-
-    return render(request, "message/mycontacts.html", {"contacts": contacts})

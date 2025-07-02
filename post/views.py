@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from .forms import (
@@ -8,7 +8,7 @@ from .forms import (
     ChangeProfilePhotoForm,
     CommentFormModel,
 )
-from .models import Post, Comment, ProfilePhoto
+from .models import Post, Comment, ProfilePhoto, FriendRequest
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from time import time
@@ -32,8 +32,12 @@ def dashboard(request):
         elif request.POST.get("settings"):
             return redirect("settings")
 
-        elif request.POST.get("messages"):
-            return redirect("viewcontacts")
+        elif request.POST.get("friends"):
+            return redirect("friends")
+        elif request.POST.get("viewrecom"):
+            return redirect("viewrecom")
+        elif request.POST.get("viewpending"):
+            return redirect("viewpending")
     return render(request, "post/dashboard.html", {"user": request.user.username})
 
 
@@ -87,7 +91,6 @@ def showmyfeed(request):
                 post.likes.remove(request.user)  # Unlike
             else:
                 post.likes.add(request.user)
-
 
             post.save()
 
@@ -156,7 +159,7 @@ def modifypost(request, postID):
 @login_required(login_url="/login/")
 def showcomments(request, postID):
     post = Post.objects.get(id=postID)
-    all_comments = post.comments_set.all()  # fixed .all()
+    all_comments = post.comments_set.all()  
 
     if request.method == "POST":
         print("request has been posted")
@@ -172,7 +175,7 @@ def showcomments(request, postID):
             print(f"Is not valid because {e}")
 
     else:
-        form = CommentFormModel()  # create an empty form for GET
+        form = CommentFormModel()
 
     return render(
         request,
@@ -180,19 +183,144 @@ def showcomments(request, postID):
         {
             "comments": all_comments,
             "form": form,
-            "post": post,  # pass post for your template to show post info cleanly
+            "post": post,  
         },
     )
 
 
 @login_required(login_url="/login/")
 def aboutuser(request, user_id):
-    user = User.objects.get(id=user_id)
-    posts = user.posts_set.all()
-    profilephoto = ProfilePhoto.objects.filter(user=user).first()
+    other_user = User.objects.get(id=user_id)
+    current_user_friends = request.user.friends.all()
+    if other_user in current_user_friends:
+        posts = other_user.posts_set.all()
+        profilephoto = ProfilePhoto.objects.filter(user=other_user).first()
+
+        return render(
+            request,
+            "post/aboutuser.html",
+            {"target_user": other_user, "posts": posts, "profilephoto": profilephoto},
+        )
+    else:
+        messages.warning(request, "This user is inaccessible . you are not friends")
+        return redirect("showmyfeed")
+
+
+@login_required(login_url="/login/")
+def friends(request):
+    user = request.user
+    myfriends = user.friends.all()
+
+    if request.method == "POST":
+        if "message" in request.POST:
+            friend_id = request.POST.get("message")
+            return redirect("chat_with", reciever_id=friend_id)
+
+        elif "remove" in request.POST:
+            friend_id = request.POST.get("remove")
+            friend = User.objects.get(id=friend_id)
+            user.friends.remove(friend)
+            messages.success(request, f"Removed {friend.username} from your friends")
+            return redirect("friends")
+    return render(request, "post/friends.html", {"myfriends": myfriends})
+
+
+from django.db.models import Q
+
+
+@login_required(login_url="/login/")
+def viewrecom(request):
+    user = request.user
+    friends = user.friends.all()
+
+    sent_pending = FriendRequest.objects.filter(
+        from_user=user, status="pending"
+    ).values_list("to_user", flat=True)
+    received_pending = FriendRequest.objects.filter(
+        to_user=user, status="pending"
+    ).values_list("from_user", flat=True)
+
+    display = User.objects.exclude(
+        Q(id__in=friends)
+        | Q(id=user.id)
+        | Q(id__in=sent_pending)
+        | Q(id__in=received_pending)
+    )
+
+    if request.method == "POST":
+        if request.POST.get("sendfriendreq"):
+            receiver_id = request.POST.get("sendfriendreq")
+            receiver_user = User.objects.get(id=receiver_id)
+            new_friend_req = FriendRequest(
+                from_user=user, to_user=receiver_user, status="pending"
+            )
+            new_friend_req.save()
+            messages.success(request, "Sent successfully")
+            return redirect("viewrecom")
+
+        elif request.POST.get("cancel"):
+            FriendRequest.objects.filter(
+                from_user=user, to_user=request.POST.get("cancel")
+            ).first().delete()
+            messages.success(request, "Cancelled Successfully")
+            return redirect("viewrecom")
+
+    return render(request, "post/myrecom.html", {"contacts": display})
+
+
+@login_required(login_url="/login/")
+def viewpending(request):
+    iamsender = FriendRequest.objects.filter(from_user=request.user, status="pending")
+    iamreciever = FriendRequest.objects.filter(to_user=request.user, status="pending")
+
+    if request.method == "POST":
+        me = request.user
+
+        if request.POST.get("accept"):
+            other_user = User.objects.get(id=request.POST.get("accept"))
+            friendrequest = FriendRequest.objects.filter(
+                from_user=other_user, to_user=me, status="pending"
+            ).first()
+            if friendrequest:
+                me.friends.add(other_user)
+                friendrequest.status = "accepted"
+                friendrequest.save()
+                messages.success(request, "Friend added successfully.")
+            else:
+                messages.error(request, "That request never existed.")
+            return redirect("viewpending")
+
+        elif request.POST.get("reject"):
+            other_user = User.objects.get(id=request.POST.get("reject"))
+            friendrequest = FriendRequest.objects.filter(
+                from_user=other_user, to_user=me, status="pending"
+            ).first()
+            if friendrequest:
+                friendrequest.status = "rejected"
+                friendrequest.save()
+                messages.success(request, "Rejected successfully.")
+            else:
+                messages.error(request, "There was no request to begin with.")
+            return redirect("viewpending")
+
+        elif request.POST.get("cancel"):
+            other_user = User.objects.get(id=request.POST.get("cancel"))
+            friendrequest = FriendRequest.objects.filter(
+                from_user=me, to_user=other_user, status="pending"
+            ).first()
+            if friendrequest:
+                friendrequest.delete()
+                messages.success(request, "Successfully deleted.")
+            else:
+                messages.error(request, "Friend request never existed.")
+            return redirect("viewpending")
 
     return render(
         request,
-        "post/aboutuser.html",
-        {"target_user": user, "posts": posts, "profilephoto": profilephoto},
+        "post/viewpending.html",
+        {"iamsender": iamsender, "iamreciever": iamreciever},
     )
+
+
+def whatsnew(request):
+    return render( request ,"post/whatsnew.html")
