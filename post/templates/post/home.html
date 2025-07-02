@@ -35,7 +35,9 @@
     padding: 40px 60px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     max-width: 600px;
+    width: 90%; /* responsive width */
     text-align: center;
+    margin: 0 auto;
   }
 
   a.btn {
@@ -47,6 +49,31 @@
     transform: scale(1.05);
     transition: 0.3s ease;
   }
+
+  /* Make buttons wrap on small screens */
+  .d-flex.justify-content-center.gap-4.mb-3 {
+    flex-wrap: wrap;
+  }
+
+  .d-flex.justify-content-center.gap-4.mb-3 a.btn {
+    flex: 1 1 140px;
+    margin-bottom: 10px;
+  }
+
+  /* Responsive typography & padding */
+  @media (max-width: 480px) {
+    .content-container {
+      padding: 20px 30px;
+    }
+
+    h1.display-2 {
+      font-size: 2.5rem;
+    }
+
+    p.lead {
+      font-size: 1rem;
+    }
+  }
 </style>
 
 <div class="homepage-wrapper">
@@ -57,7 +84,7 @@
     <div class="d-flex justify-content-center gap-4 mb-3">
       <a href="{% url 'signup' %}" class="btn btn-success btn-lg shadow-sm">Sign Up</a>
       <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg shadow-sm">Login</a>
-      <a href="{% url 'whatsnew' %}" class = "btn btn-outline-light btn-lg shadow-sm">What's New</a>
+      <a href="{% url 'whatsnew' %}" class="btn btn-outline-light btn-lg shadow-sm">What's New</a>
     </div>
 
     <small class="text-light-50">Already have an account? Just log in and start chatting away!</small>
